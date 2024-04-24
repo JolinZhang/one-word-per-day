@@ -49,6 +49,7 @@ p {
   border-radius: 6px;
   overflow: hidden;
   box-shadow: rgba(0,0,82, 0.15) 0 2px 4px;
+  margin: 10px auto 10px;
 }
 
 .input-container input {
@@ -79,10 +80,25 @@ p {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
+  align-items: center; 
   justify-content: space-between; 
 }
 .image-section img{
+  margin: 1px;
+  min-width: 250px;
+  max-width: 33%;
+  flex-grow: 1;
+}
+
+.AIimage-section{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between; 
+}
+
+.AIimage-section img{
   margin: 1px;
   min-width: 250px;
   flex-grow: 1;

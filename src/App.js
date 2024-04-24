@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 
 const App = () => {
   const [images, setImage] = useState(null)
+  const [AIImages, setAIImage] = useState(null)
   const [value, setValue] = useState("")
   const [definition, setDefinition] = useState("")
   const [audio, setAudio] = useState("")
@@ -45,7 +46,7 @@ const App = () => {
       console.error(error)
     }
   }
-
+ //why do I put the sync function here
   const playAudio = () => {
      if(audio === "") return
       const subdirectory = audio.charAt(0)
@@ -57,7 +58,28 @@ const App = () => {
       audioUrl.play()
   } 
  
-  const getImages = async()=> {
+  const getImages = async() =>{
+    try{
+      if(!value) return
+      const options = {
+        method: 'post',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+          message: value
+        })
+      }
+      const response = await fetch('http://localhost:8000/images', options)
+      const data = await response.json()
+      console.log(data)
+      setImage(data.items)
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  const getAIImages = async()=> {
     if(!value) return
     try{
         const options = {
@@ -69,11 +91,10 @@ const App = () => {
             'Content-type':'application/json'
           }
         }
-        const response = await fetch('http://localhost:8000/images', options)
+        const response = await fetch('http://localhost:8000/aiImages', options)
         const data = await response.json()
-      
       console.log(data)
-      setImage(data)
+      setAIImage(data)
       }catch(error){
         console.error(error)
       }
@@ -86,27 +107,29 @@ const App = () => {
       </p>
       <div className="input-container">
         <input value = {value} placeholder="a red apple" onChange={e => setValue(e.target.value)}/>
-        <button onClick={getWordDetail}>WordDetails</button>
+        <button onClick={() => {getWordDetail();getImages();}}>WordDetails</button>
       </div>
       </section>
       <section className="word-definition">
-      <p>{definition}</p> 
-      {audio.length > 0 && <button onClick = {playAudio}>Sound</button>}
+      <p>{definition} {audio.length > 0 && <button onClick = {playAudio}>Sound</button>}</p> 
+      </section>
+      <section className="image-section">
+        {images?.map((image, _index) => 
+            <img key={_index} src={image.link} alt={image.title}/>  
+        )}
       </section>
       <section>
       <div className="input-container">
         <input value = {value} placeholder="a red apple" onChange={e => setValue(e.target.value)}/>
-        <button onClick={getImages}>GenerateImg</button> 
+        <button onClick={getAIImages} disabled >GenerateAIImg</button> 
       </div>
       </section>
-      <section className="image-section">
-        {images?.map((image, _index) => 
-            <img key={_index} src={image.url} alt={image.revised_prompt}/>  
+      <section className="AIimage-section">
+      {AIImages?.map((image, _index) => 
+            <img key={_index} src={image.url} alt={image.title}/>  
         )}
       </section>
-      
     </div>
   );
 }
-
 export default App;

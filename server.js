@@ -10,7 +10,38 @@ app.use(cors())
 app.use(express.json())
 app.listen(PORT,() => console.log('your server is running on port' + PORT))
 
-app.post('/images', async (req, res) => {
+app.post('/images', async (req, res) =>{
+  try{
+    console.log("image request " + req.body.message)
+    const query = req.body.message
+    const apiKey = process.env.Google_API_Key
+    const searchEngineKey = process.env.Google_Cx
+    var params = new URLSearchParams({
+      key : apiKey,
+      cx : searchEngineKey,
+      q : query,
+      searchType: 'image',
+      num: 6,
+      safe: 'active'
+    })
+    const getImageUrl = "https://www.googleapis.com/customsearch/v1?" + params
+    console.log(getImageUrl)
+    const options = {
+        method : 'get',
+        hearders: {
+          'Content-Type': 'applciation/json'
+        }
+    }
+    const response = await fetch(getImageUrl, options)
+    const data = await response.json()
+    console.log(data)
+    res.send(data)
+  }catch(error){
+    console.error(error)
+  }
+})
+
+app.post('/aiImages', async (req, res) => {
   try{
     console.log(req.body.message)
     const response = await openai.images.generate
@@ -20,13 +51,13 @@ app.post('/images', async (req, res) => {
     });
     console.log(response.data)
     res.send(response.data)
-    // const data = [
-    //   {
-    //     revised_prompt: 'Create an image that showcases a vibrant garden in full bloom. Dominating the center of the garden should be a large, captivating flower with an explosion of colors, its petals spreading wide open, revealing a bright, golden core. Beside it, make sure to add a mixture of smaller flowers in a riot of colors - red, yellow, orange, pink, and purple. Please also depict the sun above, casting a warm glow over the scene. Include the details such as dewdrops clinging to the petals and leaves, enriching the visual portrayal of this lively garden.',
-    //     url: 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-XnKg87NBohpu8mSTuHnt5JWC/user-i5cpF7rItwTBeunO3rkcswC4/img-DndLlljAlguZWXsak3jhL4kJ.png?st=2024-04-06T03%3A55%3A51Z&se=2024-04-06T05%3A55%3A51Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-04-05T23%3A44%3A00Z&ske=2024-04-06T23%3A44%3A00Z&sks=b&skv=2021-08-06&sig=m/kepvIPVExudOp4LVUx216YWo90Sh8XJ7g21/6%2BdSg%3D'
-    //   }
-    // ]
-    //res.send(data)
+  //    const data = [
+  //   {
+  //   revised_prompt: "An image showcasing everyday rural life. Central to the scene, a Middle-Eastern man farmer in his late 50s, wearing a straw hat, checked shirt, and denim jeans, is preoccupied in the field. He's operating a vintage tractor on a sunlit day in the agricultural landscape, the crops waving gently in the breeze. A beautiful red barn completes the scene in the background along with a few haystacks scattered around. Cows are seen grazing peacefully in the nearby pasture, and chickens are pecking grains just off to the side of the barn.",
+  //   url: 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-XnKg87NBohpu8mSTuHnt5JWC/user-i5cpF7rItwTBeunO3rkcswC4/img-KoJ9W4RKU0qDrd3cU2msM1t4.png?st=2024-04-24T02%3A47%3A51Z&se=2024-04-24T04%3A47%3A51Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-04-23T16%3A16%3A57Z&ske=2024-04-24T16%3A16%3A57Z&sks=b&skv=2021-08-06&sig=lsa2dHNdZuNKTQ6XJypBUrwhm61zlIX8zUbnQUFB0Zs%3D'
+  //   }
+  // ]
+  //   res.send(data)
   }catch(error){
     console.error(error)
   }
