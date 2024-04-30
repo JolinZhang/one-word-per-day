@@ -76,6 +76,10 @@ p {
   background-color: #cacaca;
 } 
 
+.word-definition p{
+  font-size: 14px;
+  font-weight: bold;
+}
 .image-section{
   width: 100%;
   display: flex;

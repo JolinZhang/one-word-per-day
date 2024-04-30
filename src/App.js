@@ -1,5 +1,6 @@
 import './App.css'
 import React, {useState} from 'react'
+import { AiFillSound } from "react-icons/ai"
 
 const App = () => {
   const [images, setImage] = useState(null)
@@ -111,7 +112,7 @@ const App = () => {
       </div>
       </section>
       <section className="word-definition">
-      <p>{definition} {audio.length > 0 && <button onClick = {playAudio}>Sound</button>}</p> 
+      <p> {definition.length > 0 && <span> Definistion: </span>} {definition} {audio.length > 0 && <AiFillSound onClick = {playAudio}>&#xf028;</AiFillSound>}</p> 
       </section>
       <section className="image-section">
         {images?.map((image, _index) => 
