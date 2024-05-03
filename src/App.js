@@ -41,8 +41,14 @@ const App = () => {
       const response = await fetch('http://localhost:8000/wordDefinition', options)
       const data =  await response.json()
       console.log(data)
-      setDefinition(data[0].shortdef)
-      setAudio(data[0].hwi.prs[0].sound.audio)
+      if(!data){
+        return
+      }
+      setDefinition(data[0]?.shortdef)
+      console.log("definition "+ definition)
+      setAudio(data[0]?.hwi?.prs[0]?.sound?.audio)
+      console.log("Audio" + audio)
+      
     }catch(error){
       console.error(error)
     }
@@ -112,7 +118,7 @@ const App = () => {
       </div>
       </section>
       <section className="word-definition">
-      <p> {definition.length > 0 && <span> Definistion: </span>} {definition} {audio.length > 0 && <AiFillSound onClick = {playAudio}>&#xf028;</AiFillSound>}</p> 
+      <p> {definition?.length > 0 && <span> Definistion: </span>} {definition}{audio?.length > 0 && <AiFillSound onClick = {playAudio}>&#xf028;</AiFillSound>}</p> 
       </section>
       <section className="image-section">
         {images?.map((image, _index) => 
