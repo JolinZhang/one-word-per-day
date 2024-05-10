@@ -9,6 +9,8 @@ const App = () => {
   const [definition, setDefinition] = useState("")
   const [audio, setAudio] = useState("")
   const [audioUrl, setAudioUrl] = useState(null)
+  //const baseUrl ='http://one-word-per-day-backend:8000'
+  const baseUrl ='http://localhost:9000'
 
   const surpriseMe = async() =>{
     try{
@@ -18,7 +20,7 @@ const App = () => {
           'Content-type':'application/json'
         }
       }
-      const response = await fetch('http://localhost:8000/word', options)
+      const response = await fetch(baseUrl+'/word', options)
       const data = await response.text()
       console.log(data)
       setValue(data)
@@ -38,7 +40,7 @@ const App = () => {
           message: value
         })
       }
-      const response = await fetch('http://localhost:8000/wordDefinition', options)
+      const response = await fetch(baseUrl+'/wordDefinition', options)
       const data =  await response.json()
       console.log(data)
       if(!data){
@@ -77,7 +79,7 @@ const App = () => {
           message: value
         })
       }
-      const response = await fetch('http://localhost:8000/images', options)
+      const response = await fetch(baseUrl+'/images', options)
       const data = await response.json()
       console.log(data)
       setImage(data.items)
@@ -98,7 +100,7 @@ const App = () => {
             'Content-type':'application/json'
           }
         }
-        const response = await fetch('http://localhost:8000/aiImages', options)
+        const response = await fetch(baseUrl+'/aiImages', options)
         const data = await response.json()
       console.log(data)
       setAIImage(data)
