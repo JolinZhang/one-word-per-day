@@ -9,6 +9,7 @@
 # https://github.com/docker/awesome-compose
 services:
   frontend:
+    image: one-word-per-day-frontend:1.0.0
     container_name: one-word-per-day-frontend
     build:
       context: ./frontend
@@ -22,6 +23,7 @@ services:
       - backend
     
   backend:
+    image: one-word-per-day-backend:1.0.0
     container_name: one-word-per-day-backend
     build:
       context: ./backend

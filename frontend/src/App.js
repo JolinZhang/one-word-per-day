@@ -9,8 +9,7 @@ const App = () => {
   const [definition, setDefinition] = useState("")
   const [audio, setAudio] = useState("")
   const [audioUrl, setAudioUrl] = useState(null)
-  //const baseUrl ='http://one-word-per-day-backend:8000'
-  const baseUrl ='http://localhost:9000'
+  const baseUrl = process.env.REACT_APP_API_URL 
 
   const surpriseMe = async() =>{
     try{
